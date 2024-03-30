@@ -21,9 +21,7 @@ const ProductDetails = () => {
     console.log(productDetails)
 
   //get the single product based on id
-  const product = products.find((item) => {
-    return item.id === parseInt(id);
-  });
+
 
   // if product is not found
   if (isLoading) {
