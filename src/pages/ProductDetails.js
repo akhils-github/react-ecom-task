@@ -3,38 +3,34 @@ import { useParams } from "react-router-dom";
 import { CartContext } from "../contexts/CartContext";
 import { useQuery } from "@tanstack/react-query";
 import { PRODUCTS, newRequest } from "../api";
+import Loader from "../components/Loader";
 
 const ProductDetails = () => {
   // get the product id from url
   const { id } = useParams();
-  console.log(id)
+  console.log(id);
   const { addToCart } = useContext(CartContext);
 
-    const { data: productDetails,isLoading} = useQuery({
-      queryKey: ["productDetails",id],
-      queryFn: () =>
-        newRequest.get(`${PRODUCTS}/${id}`).then((res) => {
-          return res.data;
-        }),
-        enabled:!!id
-    });
-    console.log(productDetails)
+  const { data: productDetails, isLoading } = useQuery({
+    queryKey: ["productDetails", id],
+    queryFn: () =>
+      newRequest.get(`${PRODUCTS}/${id}`).then((res) => {
+        return res.data;
+      }),
+    enabled: !!id,
+  });
+  console.log(productDetails);
 
   //get the single product based on id
 
-
   // if product is not found
   if (isLoading) {
-    return (
-      <section className="h-screen flex justify-center items-center">
-        Loading...
-      </section>
-    );
+    return <Loader />;
   }
 
   // destructure product
   const { title, price, description, images } = productDetails;
-  console.log(title,images)
+  console.log(title, images);
   return (
     <section className="pt-[450px] md:pt-32 pb-[400px] md:pb-12 lg:py-32 h-screen flex items-center">
       <div className="container mx-auto">
@@ -46,10 +42,19 @@ const ProductDetails = () => {
           </div>
           {/* text */}
           <div className="flex-1 text-center lg:text-left">
-            <h1 className="text-[26px] font-medium mb-2 max-w-[450px] mx-auto lg:mx-0">{title}</h1>
-            <div className="text-2xl text-red-500 font-medium mb-6">$ {price}</div>
+            <h1 className="text-[26px] font-medium mb-2 max-w-[450px] mx-auto lg:mx-0">
+              {title}
+            </h1>
+            <div className="text-2xl text-red-500 font-medium mb-6">
+              $ {price}
+            </div>
             <p className="mb-8">{description}</p>
-            <button onClick={()=>addToCart(productDetails,productDetails?.id)} className='bg-primary py-4 px-8 text-white'>Add to cart</button>
+            <button
+              onClick={() => addToCart(productDetails, productDetails?.id)}
+              className="bg-primary py-4 px-8 text-white"
+            >
+              Add to cart
+            </button>
           </div>
         </div>
       </div>

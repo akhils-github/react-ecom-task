@@ -3,6 +3,7 @@ import Product from "../components/Product";
 import Hero from "../components/Hero";
 import { useQuery } from "@tanstack/react-query";
 import { PRODUCTS, newRequest } from "../api";
+import Loader from "../components/Loader";
 
 const Home = () => {
   // get products from product context
@@ -19,8 +20,6 @@ const Home = () => {
 
   console.log(productListing);
 
-
-
   return (
     <div>
       <Hero />
@@ -30,10 +29,16 @@ const Home = () => {
             Explore Our Products
           </h1>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 lg:mx-8 gap-[30px] max-w-sm mx-auto md:max-w-none md:mx-0">
-            {productListing &&
-              productListing?.map((product) => (
-                <Product product={product} key={product.id} />
-              ))}
+            {isLoading ? (
+              <Loader />
+            ) : (
+              <>
+                {productListing &&
+                  productListing?.map((product) => (
+                    <Product product={product} key={product.id} />
+                  ))}
+              </>
+            )}
           </div>
         </div>
       </section>
